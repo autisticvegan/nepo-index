@@ -1,0 +1,12 @@
+.DS_Store
+# Intermediate workflow inputs; regenerate with scripts/extract.py
+research/verified/
+research/batches/
+research/audit/
+research/audit2/
+research/stats-slim.json
+research/unsourced-quotes.json
+
+# Internal research: fact-checker notes and superseded drafts. Kept local, never published.
+research/combined.json
+research/journals/
