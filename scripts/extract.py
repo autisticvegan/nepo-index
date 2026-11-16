@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """Pull verified research out of a workflow journal into research/combined.json + scoring batches.
 
-usage: extract.py <journal.jsonl> [<journal.jsonl> ...]
+usage: extract.py [--us] <journal.jsonl> [<journal.jsonl> ...]
+
+--us: second research round; writes research/combined-us.json + research/batches-us/ and skips
+anyone already in research/combined.json.
 """
 import json, re, sys, unicodedata
 from collections import Counter, defaultdict
@@ -45,8 +48,15 @@ def load(journals):
     return [(labels.get(k, ""), r) for k, r in results if r]
 
 
-def main(journals):
+def main(argv):
+    us = argv[:1] == ["--us"]
+    journals = argv[1:] if us else argv
     rows = load(journals)
+    prior_names, prior_ids = set(), set()
+    if us:
+        prior = json.loads((ROOT / "research/combined.json").read_text())["cases"]
+        prior_names = {ALIAS.get(norm(c["name"]), norm(c["name"])) for c in prior}
+        prior_ids = {c["id"] for c in prior}
     cases, special = [], defaultdict(list)
     for label, r in rows:
         m = re.match(r"^(gap-)?verify:([^#]+)#", label)
@@ -67,7 +77,7 @@ def main(journals):
             continue
         k = norm(c["name"])
         k = ALIAS.get(k, k)
-        if k in DROP:
+        if k in DROP or k in prior_names:
             continue
         cur = best.get(k)
         key = (RANK.get(c.get("verdict"), 5), -len(c.get("key_facts", [])))
@@ -78,7 +88,7 @@ def main(journals):
         else:
             cur.setdefault("also_in", []).append(c["lane"])
 
-    used, kept = set(), []
+    used, kept = set(prior_ids), []
     for c in best.values():
         s = slug(c["name"]) or "entry"
         base, i = s, 2
@@ -93,11 +103,11 @@ def main(journals):
         items = [x for x in special.get(k, []) if x.get("verdict") != "rejected"]
         out[k] = items
     (ROOT / "research").mkdir(exist_ok=True)
-    (ROOT / "research/combined.json").write_text(json.dumps(out, indent=1, ensure_ascii=False))
+    (ROOT / ("research/combined-us.json" if us else "research/combined.json")).write_text(json.dumps(out, indent=1, ensure_ascii=False))
 
     slim_keys = ["id", "name", "category", "country", "known_as", "relatives", "what_they_got", "the_leg_up", "hook",
                  "big_number", "years", "status_2026", "tropes", "nuance", "surprise", "notability"]
-    bdir = ROOT / "research/batches"
+    bdir = ROOT / ("research/batches-us" if us else "research/batches")
     bdir.mkdir(exist_ok=True)
     for f in bdir.glob("batch-*.json"):
         f.unlink()

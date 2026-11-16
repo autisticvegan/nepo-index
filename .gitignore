@@ -10,3 +10,9 @@ research/unsourced-quotes.json
 # Internal research: fact-checker notes and superseded drafts. Kept local, never published.
 research/combined.json
 research/journals/
+research/verified-us/
+research/batches-us/
+research/audit-us/
+research/combined-us.json
+research/emoji/
+research/quiz-more.json

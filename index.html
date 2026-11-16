@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Anton&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,400&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/style.css?v=7">
+<link rel="stylesheet" href="css/style.css?v=12">
 </head>
 <body>
 <a class="skip" href="#board">Skip to the index</a>
@@ -18,20 +18,20 @@
 
 <header class="masthead wrap">
   <nav class="topnav" aria-label="Sections">
-    <a href="#board">The Index</a>
-    <a href="#odds">The Odds</a>
-    <a href="#quiz">Nepo or Not?</a>
-    <a href="#trees">Dynasties</a>
-    <a href="#quotes">Quotes</a>
-    <a href="#words">Words</a>
-    <a href="#history">History</a>
-    <a href="#meter">Your Score</a>
+    <a href="#board">🏆 The Index</a>
+    <a href="#odds">📈 The Odds</a>
+    <a href="#quiz">🤔 Nepo or Not?</a>
+    <a href="#trees">🌳 Dynasties</a>
+    <a href="#quotes">🗣️ Quotes</a>
+    <a href="#words">🌍 Words</a>
+    <a href="#history">📜 History</a>
     <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle dark mode">◐</button>
   </nav>
   <div class="hero">
-    <p class="kicker">Vol. 1 · Fact-checked · <span id="caseCount">—</span> entries · Updated <span id="updated">Nov 2026</span></p>
+    <p class="kicker">Vol. 2 · 🇺🇸 Now with way more America · ✅ Fact-checked · <span id="caseCount">—</span> entries · Updated <span id="updated">Nov 2026</span></p>
     <h1 class="title"><span class="the">The</span> NEPO<br>INDEX<span class="spoon" aria-hidden="true">🥄</span></h1>
-    <p class="tagline">Hard work pays off. <em>Especially your dad’s.</em></p>
+    <p class="tagline">Hard work pays off. <em>Especially your dad’s.</em> 💅</p>
+    <div class="hero-cta"><a class="btn" href="#board">🏆 See the rankings</a><a class="btn ghost" href="#quiz">🤔 Play Nepo or Not?</a></div>
     <div class="hero-stat" id="heroStat" aria-live="polite"></div>
   </div>
 </header>
@@ -39,36 +39,38 @@
 <main>
   <section id="board" class="wrap section">
     <div class="section-head">
-      <h2>The Index</h2>
-      <p class="dek">Every entry ranked by <b>Nepo Score</b>: how directly family got them there, how big the prize was, and how brazen it looked. Click anyone for the receipts.</p>
+      <h2>🏆 The Index</h2>
+      <p class="dek">Every entry ranked by <b>Nepo Score</b> 🥄: how directly family got them there, how big the prize was, and how brazen it looked. Tap anyone for the receipts. 🧾</p>
     </div>
-    <h3 class="champs-h">Category champions <small>The top spoon in every field. Click for receipts.</small></h3>
+    <div class="region" id="regionSeg" role="group" aria-label="Show people from"></div>
+    <h3 class="champs-h">🥇 Category champions <small>The top spoon in every field. Tap for receipts.</small></h3>
     <div class="champs" id="champs"></div>
     <div class="tiers" id="tierLegend"></div>
     <div class="controls">
       <div class="chips" id="catChips" role="toolbar" aria-label="Filter by category"></div>
       <div class="control-row">
-        <label class="search"><span class="sr">Search</span><input id="search" type="search" placeholder="Search names, families, countries…" autocomplete="off"></label>
-        <label class="select"><span>Trope</span><select id="tropeSel"><option value="">Any</option></select></label>
+        <label class="search"><span class="sr">Search</span><input id="search" type="search" placeholder="🔎 Search names, families, companies…" autocomplete="off"></label>
+        <button class="btn random" id="randomBtn" type="button">🎲 Random nepo baby</button>
+        <label class="select"><span>Trope</span><select id="tropeSel"><option value="">✨ Any</option></select></label>
         <label class="select"><span>Sort</span><select id="sortSel">
-          <option value="score">Nepo Score</option>
-          <option value="brazen">Brazenness</option>
-          <option value="stakes">Size of the prize</option>
-          <option value="surprise">Surprise factor</option>
-          <option value="name">A–Z</option>
+          <option value="score">🥄 Nepo Score</option>
+          <option value="brazen">😳 Brazenness</option>
+          <option value="stakes">🏆 Size of the prize</option>
+          <option value="surprise">🤯 Surprise factor</option>
+          <option value="name">🔤 A–Z</option>
         </select></label>
       </div>
       <p class="count" id="resultCount" aria-live="polite"></p>
     </div>
     <ol class="board" id="boardList"></ol>
-    <button class="more" id="moreBtn" type="button">Show more</button>
+    <button class="more" id="moreBtn" type="button">👇 Show more</button>
   </section>
 
   <section id="odds" class="band">
     <div class="wrap section">
       <div class="section-head">
-        <h2>The Odds</h2>
-        <p class="dek">How much more likely you are to land the job when a parent already had it. Log scale, because the numbers get silly.</p>
+        <h2>📈 The Odds</h2>
+        <p class="dek">How much more likely you are to land the job when a parent already had it. Log scale, because the numbers get silly. 🤯</p>
       </div>
       <div class="odds" id="oddsChart"></div>
       <div class="statgrid" id="statGrid"></div>
@@ -77,8 +79,8 @@
 
   <section id="quiz" class="wrap section">
     <div class="section-head">
-      <h2>Nepo or Not?</h2>
-      <p class="dek">Ten famous people. Guess who had a leg-up. Some of these will hurt.</p>
+      <h2>🤔 Nepo or Not?</h2>
+      <p class="dek">Famous people, one question: did family give them a leg-up? Play a quick 10, the full 25, or endless until you run out of ❤️. Some of these will hurt. 😬</p>
     </div>
     <div class="quiz" id="quizBox"></div>
   </section>
@@ -86,8 +88,8 @@
   <section id="trees" class="band">
     <div class="wrap section">
       <div class="section-head">
-        <h2>Dynasties</h2>
-        <p class="dek">Some families don’t pass down the china. They pass down the country.</p>
+        <h2>🌳 Dynasties</h2>
+        <p class="dek">Some families pass down the china. 🍽️ Others pass down the country. 👑</p>
       </div>
       <div class="chips" id="treeChips" role="tablist" aria-label="Pick a dynasty"></div>
       <div class="tree" id="treeView"></div>
@@ -96,8 +98,8 @@
 
   <section id="quotes" class="wrap section">
     <div class="section-head">
-      <h2>Nepo Babies Say the Darndest Things</h2>
-      <p class="dek">Denials, defenses, and the occasional moment of startling self-awareness.</p>
+      <h2>🗣️ Nepo Babies Say the Darndest Things</h2>
+      <p class="dek">Denials 🙅, defenses 🛡️, and the occasional moment of startling self-awareness 🫠.</p>
     </div>
     <div class="chips" id="toneChips"></div>
     <div class="quotes" id="quoteWall"></div>
@@ -106,8 +108,8 @@
   <section id="words" class="band">
     <div class="wrap section">
       <div class="section-head">
-        <h2>Every Culture Has a Word for It</h2>
-        <p class="dek">Tap a card. Humanity invented nepotism independently, everywhere, and named it something better each time.</p>
+        <h2>🌍 Every Culture Has a Word for It</h2>
+        <p class="dek">👆 Tap a card. Humanity invented nepotism independently, everywhere, and named it something better each time.</p>
       </div>
       <div class="words" id="wordGrid"></div>
     </div>
@@ -115,37 +117,29 @@
 
   <section id="history" class="wrap section">
     <div class="section-head">
-      <h2>A Brief History of Keeping It in the Family</h2>
+      <h2>📜 A Brief History of Keeping It in the Family</h2>
       <p class="dek">The word comes from popes promoting their “nephews.” It has been downhill (or uphill, depending on your surname) ever since.</p>
     </div>
     <ol class="timeline" id="timeline"></ol>
   </section>
 
-  <section id="meter" class="band">
-    <div class="wrap section">
-      <div class="section-head">
-        <h2>What’s Your Nepo Score?</h2>
-        <p class="dek">Be honest. Nobody’s checking. (Unless your uncle runs HR.)</p>
-      </div>
-      <form class="meter" id="meterForm"></form>
-    </div>
-  </section>
 
   <section id="method" class="wrap section">
     <div class="section-head">
-      <h2>How This Works</h2>
+      <h2>🧪 How This Works</h2>
     </div>
     <div class="method" id="method-body">
       <p><b>Every entry was researched and then independently fact-checked</b> by a second pass that tried to knock it down. Anything that couldn’t be confirmed got cut. Each entry links its sources; if you spot an error, the sources are right there to check against.</p>
       <p><b>The Nepo Score (0–100)</b> adds up four things: <i>Leg-up</i> (0–40, how directly family produced the outcome), <i>Prize</i> (0–30, a country beats a company beats a job), <i>Brazenness</i> (0–20, dad buying the team scores higher than a famous surname), and <i>Irony</i> (0–10, denials, rule changes, satire of one’s own situation).</p>
-      <p><b>Spoon tiers</b> borrow from Korea’s “spoon class theory” (수저계급론): bronze, silver, gold, diamond.</p>
+      <p><b>Spoon tiers</b> borrow from Korea’s “spoon class theory” (수저계급론): 🥉 bronze, 🥈 silver, 🥇 gold, 💎 diamond.</p>
+      <p><b>USA vs. the world:</b> the index opens on 🇺🇸 US cases. Flip to 🌍 Rest of world for the people who inherited actual countries.</p>
       <p><b>What this is not:</b> an accusation of wrongdoing. Plenty of people on this list are talented and work hard. The point is access: who gets the first audition, the first board seat, the first check, or the first country.</p>
     </div>
   </section>
 </main>
 
 <footer class="footer wrap">
-  <p>The Nepo Index · A personal project · Meritocracy is a family business.</p>
+  <p>🥄 The Nepo Index · A personal project · Meritocracy is a family business.</p>
 </footer>
 
 <div class="modal" id="modal" hidden>
@@ -156,7 +150,7 @@
   </article>
 </div>
 
-<script src="js/data.js?v=7"></script>
-<script src="js/app.js?v=7"></script>
+<script src="js/data.js?v=12"></script>
+<script src="js/app.js?v=12"></script>
 </body>
 </html>

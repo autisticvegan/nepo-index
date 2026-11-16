@@ -26,7 +26,12 @@ def clean_sources(srcs):
 
 def main(journals):
     data = json.loads((ROOT / "research/combined.json").read_text())
+    us_file = ROOT / "research/combined-us.json"  # second research round (US focus)
+    if us_file.exists():
+        seen_ids = {c["id"] for c in data["cases"]}
+        data["cases"] += [c for c in json.loads(us_file.read_text())["cases"] if c["id"] not in seen_ids]
     labels, scores, copy, review, statmeta, calib, fixes = {}, defaultdict(list), {}, {}, {}, {}, defaultdict(list)
+    emoji, emoji_fix = {}, {}
     for j in journals:
         for line in open(j):
             ev = json.loads(line)
@@ -45,6 +50,12 @@ def main(journals):
             elif lab.startswith("review:"):
                 for c in r.get("copy", []):
                     review[c["id"]] = c
+            elif lab.startswith("emoji:"):
+                for x in r.get("items", []):
+                    emoji[x["id"]] = x["emoji"]
+            elif lab.startswith("emoji-review"):
+                for x in r.get("fixes", []):
+                    emoji_fix[x["id"]] = x["emoji"]
             elif lab.startswith("audit:"):
                 for f in r.get("fixes", []):
                     fixes[f["id"]].append(f)
@@ -75,7 +86,7 @@ def main(journals):
             o["score"] = sc
         cp = dict(copy.get(c["id"], {}))
         cp.update({k: v for k, v in review.get(c["id"], {}).items() if v})
-        for k in ("headline", "quip", "ticker", "ticker_symbol", "year_label"):
+        for k in ("headline", "quip", "ticker", "ticker_symbol", "year_label", "emoji"):
             if cp.get(k):
                 o[k] = cp[k]
         if cp.get("sort_year") is not None:
@@ -86,7 +97,10 @@ def main(journals):
             if o.get(f["field"]) != f["old"]:
                 print(f"audit: {c['id']}.{f['field']} text drifted; applying anyway")
             o[f["field"]] = f["new"]
+        if c["id"] in emoji or c["id"] in emoji_fix:
+            o["emoji"] = emoji_fix.get(c["id"]) or emoji[c["id"]]
         o.update(overrides.get(c["id"], {}))
+        o["us"] = bool(re.search(r"united states|\busa\b|\bu\.s\.", o.get("country", ""), re.I))
         cases.append(o)
 
     stats = []
@@ -110,11 +124,16 @@ def main(journals):
             out.append(x)
         return out
 
+    quiz = data.get("quiz", [])
+    more = ROOT / "research/quiz-more.json"  # second quiz round
+    if more.exists():
+        have = {q["name"].lower() for q in quiz}
+        quiz = quiz + [q for q in json.loads(more.read_text()) if q["name"].lower() not in have]
     payload = {
         "updated": "Nov 2026",
         "cases": cases,
         "stats": stats,
-        "quiz": strip(data.get("quiz", [])),
+        "quiz": strip(quiz),
         "trees": strip(data.get("trees", [])),
         "quotes": strip(data.get("quotes", [])),
         "words": strip(data.get("words", [])),
