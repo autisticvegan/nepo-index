@@ -2,7 +2,7 @@
 
 Hard work pays off. Especially your dad's.
 
-A fact-checked, ranked guide to people who got a leg up from family: 405 ranked entries, a history timeline, odds and stats, a quiz, dynasty trees, quotes, and words for nepotism from around the world.
+A fact-checked, ranked guide to people who got a leg up from family: 652 ranked entries, a history timeline, odds and stats, a quiz, dynasty trees, quotes, and words for nepotism from around the world.
 
 Static site, no build step. Open `index.html` through any local server:
 

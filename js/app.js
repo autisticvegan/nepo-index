@@ -61,7 +61,7 @@
   const byId = new Map(cases.map(c => [c.id, c]));
 
   // ---------- regions (default: USA) ----------
-  const isUS = (c) => c.us === true || /united states|\busa\b|\bu\.s\./i.test(c.country || '');
+  const isUS = (c) => typeof c.us === 'boolean' ? c.us : /united states|\busa\b|\bu\.s\./i.test(String(c.country || '').split('/')[0]);
   const REGIONS = {
     us: { label: '🇺🇸 USA', test: isUS, where: 'in the USA', other: 'outside the USA' },
     world: { label: '🌍 Rest of world', test: c => !isUS(c), where: 'outside the USA', other: 'in the USA' },

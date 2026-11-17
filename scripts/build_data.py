@@ -11,6 +11,23 @@ ROOT = Path(__file__).resolve().parent.parent
 CASE_KEYS = ["id", "name", "category", "country", "known_as", "relatives", "what_they_got", "the_leg_up", "hook",
              "big_number", "key_facts", "years", "status_2026", "tropes", "nuance", "quote", "surprise", "notability"]
 DIMS = {"legup": 40, "stakes": 30, "brazen": 20, "irony": 10}
+US_RE = re.compile(r"united states|\busa\b|\bu\.s\.", re.I)
+
+
+def clean_country(s):
+    parts = []
+    for p in (s or "").split("/"):
+        p = p.strip()
+        p = re.sub(r"^USA$", "United States", p)
+        p = re.sub(r"^UK$", "United Kingdom", p)
+        if p:
+            parts.append(p)
+    return " / ".join(parts)
+
+
+def is_us_country(country):
+    primary = (country or "").split("/")[0].strip()
+    return bool(US_RE.search(primary))
 
 
 def clean_sources(srcs):
@@ -99,8 +116,12 @@ def main(journals):
             o[f["field"]] = f["new"]
         if c["id"] in emoji or c["id"] in emoji_fix:
             o["emoji"] = emoji_fix.get(c["id"]) or emoji[c["id"]]
-        o.update(overrides.get(c["id"], {}))
-        o["us"] = bool(re.search(r"united states|\busa\b|\bu\.s\.", o.get("country", ""), re.I))
+        ovr = overrides.get(c["id"], {})
+        o.update(ovr)
+        if "country" in o:
+            o["country"] = clean_country(o["country"])
+        if "us" not in ovr:
+            o["us"] = is_us_country(o.get("country", ""))
         cases.append(o)
 
     stats = []
